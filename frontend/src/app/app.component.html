@@ -1,0 +1,17 @@
+<app-toolbar></app-toolbar>
+<mat-tab-group (selectedTabChange)="onTabChanged($event)" [disablePagination]="true" class="mat-tab-fill-height" headerPosition="below" mat-stretch-tabs color="accent" backgroundColor="primary">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">fast_forward</mat-icon>
+      Normal
+    </ng-template>
+    <app-api-counter></app-api-counter>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="tab-icon">arrow_right</mat-icon>
+      Bench
+    </ng-template>
+    <app-api-counter-bench></app-api-counter-bench>
+  </mat-tab>
+</mat-tab-group>

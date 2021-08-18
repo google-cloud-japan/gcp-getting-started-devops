@@ -1,0 +1,28 @@
+.container {
+  min-width: 320px;
+  display: flex;
+  height: calc(100vh - 96px);
+}
+
+.item {
+  flex: 1;
+  margin: 16px;
+  padding: 32px;
+}
+
+.item-header {
+  height: 120px;
+}
+
+.item-title {
+  font-size: 2em;
+}
+
+.counter {
+  font-size: 3em;
+  margin-right: 8px;
+}
+
+.additional {
+  font-size: 2em;
+}

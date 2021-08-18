@@ -1,0 +1,8 @@
+.mat-toolbar {
+  position: relative;
+  height: 48px;
+}
+
+.toolbar-icon {
+  margin-right: 16px;
+}

@@ -1,0 +1,14 @@
+<div class="container" fxLayout="row wrap" fxLayout.lt-sm="column wrap" fxLayoutGap="16px" fxLayoutAlign="space-around">
+  <div class="item mat-elevation-z4" fxLayout="column">
+    <div class="item-header">
+      <span class="item-title">Send<br />requests!</span>
+    </div>
+    <button [disabled]="accessing" mat-raised-button color="primary" (click)="startCountUp()">Start</button>
+  </div>
+  <div class="item mat-elevation-z4" fxLayout="column">
+    <div class="item-header">
+      <span class="counter">{{ count }}</span> <span class="additional">requests</span>
+    </div>
+    <button [disabled]="!accessing" mat-raised-button color="warn" (click)="resetCountUp()">Reset</button>
+  </div>
+</div>
