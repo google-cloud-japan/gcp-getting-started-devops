@@ -190,7 +190,7 @@ Go 言語で作成されたサンプル Web アプリケーションをコンテ
 ここで作成したコンテナはローカルディスクに保存されます。
 
 ```bash
-docker build -t asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-lab-jp/devops-handson:v1 .
+docker build -t asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/handson:v1 .
 ```
 
 **ヒント**: `docker build` コマンドを叩くと、Dockerfile が読み込まれ、そこに記載されている手順通りにコンテナが作成されます。
@@ -202,7 +202,7 @@ docker build -t asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting
 ```bash
 docker run -d -p 8080:8080 \
 --name devops-handson \
-asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-lab-jp/devops-handson:v1
+asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/handson:v1
 ```
 
 **ヒント**: Cloud Shell 環境の 8080 ポートを、コンテナの 8080 ポートに紐付け、バックグラウンドで起動します。
@@ -218,7 +218,7 @@ asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-lab-jp/
 
 正しくアプリケーションにアクセスできると、下記のような画面が表示されます。
 
-![BrowserAccessToFrontend](https://storage.googleapis.com/jp-devops-handson/frontend_normal.png)
+![BrowserAccessToFrontend](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/frontend.png)
 
 <walkthrough-footnote>ローカル環境（Cloud Shell 内）で動いているコンテナにアクセスできました。次に GKE で動かすための準備を進めます。</walkthrough-footnote>
 
@@ -230,7 +230,7 @@ asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-lab-jp/
 ### Docker リポジトリの作成
 
 ```bash
-gcloud artifacts repositories create gcp-getting-started-lab-jp --repository-format=docker \
+gcloud artifacts repositories create gcp-getting-started-devops --repository-format=docker \
 --location=asia-northeast1 --description="Docker repository for DevOps Handson"
 ```
 
@@ -243,7 +243,7 @@ gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 ### 作成したコンテナをコンテナレジストリ（Artifact Registry）へ登録（プッシュ）する
 
 ```bash
-docker push asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-lab-jp/devops-handson:v1
+docker push asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/handson:v1
 ```
 
 **GUI**: [コンテナレジストリ](https://console.cloud.google.com/artifacts/browse/{{project-id}})
@@ -376,9 +376,9 @@ export SERVICE_IP=$(kubectl get service devops-handson-loadbalancer -n devops-ha
 
 ## アクセスに時間がかかるページの確認
 
-ページ下部のタブで normal, bench を切り替え、`Start!` をクリックすることで /normal と /bench に対して API アクセスをすることが可能です。
+ページ下部のタブで Normal, Bench を切り替え、`Start` をクリックすることで /normal と /bench に対して API アクセスをすることが可能です。
 
-![BrowserAccessToBench](https://storage.googleapis.com/jp-devops-handson/frontend_bench.png)
+![BrowserAccessToFrontend](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/frontend.png)
 
 ### /bench の API にアクセス負荷をかける
 
@@ -453,7 +453,7 @@ Operations を利用しアプリケーションのトラブルシューティン
 3. ログを表示をクリック
 4. “I” と表示されるアイコンをクリックして、連携された Cloud logging のログを確認
 
-![Trace](https://storage.googleapis.com/jp-devops-handson/trace_overall.png)
+![Trace](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/trace_overall.png)
 
 **ヒント**: 今回は 1 アプリケーションの中の処理呼び出しを見ています。しかしこの分散トレーシングは特にユーザーの 1 リクエストが複数のサービスで構成されるような、マイクロサービスアーキテクチャで有用です。
 
@@ -466,11 +466,11 @@ Operations を利用しアプリケーションのトラブルシューティン
 
 [トレースリストのページ](https://console.cloud.google.com/traces/traces?project={{project-id}}) のページで `/bench` のトレースを表示し、ログの横に表示されている 表示リンク をクリックします。
 
-![TraceToLogging](https://storage.googleapis.com/jp-devops-handson/trace_detail.png)
+![TraceToLogging](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/trace_detail.png)
 
 Logging のページに遷移し、関連するログが表示されていることを確認します。
 
-![Logging](https://storage.googleapis.com/jp-devops-handson/log_viewer.png)
+![Logging](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/log_viewer.png)
 
 [アプリケーションログ](https://console.cloud.google.com/logs/viewer?project={{project-id}}&resource=k8s_container)も確認可能です。
 
@@ -480,7 +480,7 @@ Logging のページに遷移し、関連するログが表示されているこ
 
 [プロファイラ](https://console.cloud.google.com/profiler/devops-demo;zone=asia-northeast1-c;version=1.0.0/cpu?project={{project-id}}) を開き、fibonacci という関数の処理にリソースが使われていることを確認します。
 
-![Profiler](https://storage.googleapis.com/jp-devops-handson/profiler.png)
+![Profiler](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/profiler.png)
 
 `プロファイルの種類` を切り替えることで、様々な情報を見ることができます。
 
@@ -502,7 +502,7 @@ Logging のページに遷移し、関連するログが表示されているこ
 まずアプリケーションのどこでそのログ出力をしているかを確認します。
 
 1. 画面右上にあるアイコン <walkthrough-cloud-shell-editor-icon></walkthrough-cloud-shell-editor-icon> をクリックし、Cloud Shell エディタを開きます。
-2. 次にエディタのエクスプローラーから `cloudshell_open/gcp-getting-started-lab-jp/devops/` とたどり、main.go ファイルを開きます。
+2. 次にエディタのエクスプローラーから `cloudshell_open/gcp-getting-started-devops/backend/` とたどり、main.go ファイルを開きます。
 3. 98 行目の log.Printf という行が該当箇所です。
 
 ### 出力されたログの確認
@@ -638,10 +638,10 @@ kubectl describe deployment/devops-handson-deployment -n devops-handson-ns | gre
 コマンド実行結果の例。
 
 ```
-    Image:        asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-lab-jp/devops-handson:COMMITHASH
+    Image:        asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-devops/handson:COMMITHASH
 ```
 
-Cloud Build 実行前は Image が `asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-lab-jp/devops-handson:v1` となっていますが、実行後は `asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-lab-jp/devops-handson:COMMITHASH` になっている事が分かります。
+Cloud Build 実行前は Image が `asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-devops/handson:v1` となっていますが、実行後は `asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-devops/handson:COMMITHASH` になっている事が分かります。
 実際は、COMMITHASH には Git のコミットハッシュ値が入ります。
 
 <walkthrough-footnote>資材を更新、プッシュをトリガーとしたアプリケーションのビルド、コンテナ化、GKE へのデプロイを行うパイプラインが完成しました。次はチャレンジ問題を用意しています。</walkthrough-footnote>
@@ -723,7 +723,7 @@ gcloud source repos delete devops-handson --quiet
 ### Artifact Registry のリポジトリの削除
 
 ```bash
-gcloud artifacts repositories delete gcp-getting-started-lab-jp --location=asia-northeast1
+gcloud artifacts repositories delete gcp-getting-started-devops --location=asia-northeast1 --quiet
 ```
 
 ### Cloud Build トリガーの削除
