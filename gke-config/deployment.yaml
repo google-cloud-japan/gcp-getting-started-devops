@@ -34,7 +34,7 @@ spec:
             secretName: dohandson-key
       containers:
         - name: myapp
-          image: asia-northeast1-docker.pkg.dev/FIXME/gcp-getting-started-lab-jp/devops-handson:v1
+          image: asia-northeast1-docker.pkg.dev/FIXME/gcp-getting-started-devops/handson:v1
           ports:
             - containerPort: 8080
 ---
@@ -52,12 +52,15 @@ spec:
       port: 8080
       targetPort: 8080
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: devops-handson-ingress
   namespace: devops-handson-ns
 spec:
-  backend:
-    serviceName: devops-handson
-    servicePort: 8080
+  defaultBackend:
+    service:
+      name: devops-handson
+      port:
+        number: 8080
+
