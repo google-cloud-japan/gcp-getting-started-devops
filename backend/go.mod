@@ -1,4 +1,4 @@
-module github.com/GoogleCloudPlatform/gcp-getting-started-lab-jp/devops/
+module github.com/google-cloud-japan/gcp-getting-started-devops/backend
 
 go 1.15
 
