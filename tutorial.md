@@ -559,7 +559,7 @@ gcloud source repos create devops-handson
 Cloud Build に前の手順で作成した、プライベート Git リポジトリに push が行われたときに起動されるトリガーを作成します。
 
 ```bash
-gcloud beta builds triggers create cloud-source-repositories --description="devopshandson" --repo=devops-handson --branch-pattern=".*" --build-config="devops/cloudbuild.yaml"
+gcloud beta builds triggers create cloud-source-repositories --description="devopshandson" --repo=devops-handson --branch-pattern=".*" --build-config="cloudbuild.yaml"
 ```
 
 **GUI**: [ビルドトリガー](https://console.cloud.google.com/cloud-build/triggers?project={{project-id}})
