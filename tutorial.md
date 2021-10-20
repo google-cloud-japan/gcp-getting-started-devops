@@ -258,7 +258,8 @@ docker push asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-sta
 
 ```bash
 gcloud container clusters create "k8s-devops-handson"  \
---enable-stackdriver-kubernetes \
+--logging=SYSTEM,WORKLOAD \
+--monitoring=SYSTEM \
 --enable-ip-alias \
 --release-channel stable \
 --workload-pool $GOOGLE_CLOUD_PROJECT.svc.id.goog
