@@ -42,7 +42,7 @@ export class CountService {
         return of(this.count);
       }
       ),
-      delay(1000),
+      delay(100),
       repeat(),
     );
   }
@@ -58,7 +58,7 @@ export class CountService {
         return of(this.count);
       }
       ),
-      delay(2000),
+      delay(100),
       repeat(),
     );
   }

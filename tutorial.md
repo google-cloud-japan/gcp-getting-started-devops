@@ -258,7 +258,8 @@ docker push asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-sta
 
 ```bash
 gcloud container clusters create "k8s-devops-handson"  \
---enable-stackdriver-kubernetes \
+--logging=SYSTEM,WORKLOAD \
+--monitoring=SYSTEM \
 --enable-ip-alias \
 --release-channel stable \
 --workload-pool $GOOGLE_CLOUD_PROJECT.svc.id.goog
@@ -558,7 +559,7 @@ gcloud source repos create devops-handson
 Cloud Build に前の手順で作成した、プライベート Git リポジトリに push が行われたときに起動されるトリガーを作成します。
 
 ```bash
-gcloud beta builds triggers create cloud-source-repositories --description="devopshandson" --repo=devops-handson --branch-pattern=".*" --build-config="devops/cloudbuild.yaml"
+gcloud beta builds triggers create cloud-source-repositories --description="devopshandson" --repo=devops-handson --branch-pattern=".*" --build-config="cloudbuild.yaml"
 ```
 
 **GUI**: [ビルドトリガー](https://console.cloud.google.com/cloud-build/triggers?project={{project-id}})
