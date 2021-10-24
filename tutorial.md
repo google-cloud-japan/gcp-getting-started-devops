@@ -220,6 +220,14 @@ asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/
 
 ![BrowserAccessToFrontend](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/frontend.png)
 
+### 起動しているアプリケーションの停止
+
+Cloud Shell 上で動いているアプリケーションを停止します。
+
+```bash
+docker ps -q | xargs -I{} docker stop {}
+```
+
 <walkthrough-footnote>ローカル環境（Cloud Shell 内）で動いているコンテナにアクセスできました。次に GKE で動かすための準備を進めます。</walkthrough-footnote>
 
 ## コンテナのレジストリへの登録
