@@ -128,24 +128,31 @@ func addAttributesToSpan(span *trace.Span, r *http.Request) {
 	)
 }
 
-func fibonacci(ctx context.Context, loopNum int) {
+func fibonacci(ctx context.Context, number int) int {
 	_, span := trace.StartSpan(ctx, "fibonacci")
 	s := span.SpanContext()
 	defer span.End()
-	prev, next := 0, 1
-	for i := 0; i < loopNum; i++ {
-		prev, next = next, prev+next
-	}
-	span.AddAttributes(trace.Int64Attribute("loopNum", int64(loopNum)))
 
-	logMethod(s.TraceID.String(), s.SpanID.String(), fmt.Sprintf("Fibonacci calculation completed: %v loops", loopNum))
+	result := fibonacciOnLocal(number)
+
+	span.AddAttributes(trace.Int64Attribute("loopNum", int64(number)))
+	logMethod(s.TraceID.String(), s.SpanID.String(), fmt.Sprintf("Fibonacci calculation completed: %v loops", number))
+
+	return result
 }
 
-func fibonacciOnLocal(loopNum int) {
+func fibonacciOnLocal(number int) int {
 	prev, next := 0, 1
-	for i := 0; i < loopNum; i++ {
+	switch number {
+	case 0:
+		return 0
+	case 1:
+		return 1
+	}
+	for i := 1; i < number; i++ {
 		prev, next = next, prev+next
 	}
+	return next
 }
 
 func initLogSettings() {
