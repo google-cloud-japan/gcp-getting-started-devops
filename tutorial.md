@@ -464,7 +464,7 @@ Operations を利用しアプリケーションのトラブルシューティン
 
 1. [トレースリストのページ](https://console.cloud.google.com/traces/traces?project={{project-id}})にブラウザからアクセスし、`トレース フィルタを追加` で `RootSpan`プロパティを選択、`/bench` を入力
 2. リクエストが遅い Span（青丸）を確認
-3. ログを表示をクリック
+3. `ログを表示` のチェックボックスをチェック
 4. “I” と表示されるアイコンをクリックして、連携された Cloud logging のログを確認
 
 ![Trace](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/trace_overall.png)
