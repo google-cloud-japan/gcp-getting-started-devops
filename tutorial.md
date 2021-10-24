@@ -105,7 +105,7 @@ GCP では利用したい機能ごとに、有効化を行う必要がありま�
 ### ハンズオンで利用する GCP の API を有効化する
 
 ```bash
-gcloud services enable cloudbuild.googleapis.com sourcerepo.googleapis.com cloudresourcemanager.googleapis.com container.googleapis.com stackdriver.googleapis.com cloudtrace.googleapis.com cloudprofiler.googleapis.com logging.googleapis.com iamcredentials.googleapis.com artifactregistry.googleapis.com
+gcloud services enable cloudbuild.googleapis.com sourcerepo.googleapis.com cloudresourcemanager.googleapis.com container.googleapis.com stackdriver.googleapis.com cloudtrace.googleapis.com cloudprofiler.googleapis.com logging.googleapis.com iamcredentials.googleapis.com artifactregistry.googleapis.com run.googleapis.com
 ```
 
 **GUI**: [API ライブラリ](https://console.cloud.google.com/apis/library?project={{project-id}})
