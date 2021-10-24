@@ -613,7 +613,7 @@ git remote add google https://source.developers.google.com/p/$GOOGLE_CLOUD_PROJE
 git push コマンドを使い、CSR に資材を転送（プッシュ）します。
 
 ```bash
-git push google master
+git push google main
 ```
 
 **GUI**: [Source Repository](https://source.cloud.google.com/{{project-id}}/devops-handson) から資材がプッシュされたことを確認できます。
