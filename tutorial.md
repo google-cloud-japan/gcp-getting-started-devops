@@ -24,6 +24,7 @@
   - GKE クラスタの作成
   - コンテナの GKE へのデプロイ、外部公開
   - チャレンジ問題：もう一つの外部からのアクセス経路
+  - チャレンジ問題：コンテナのサーバーレス環境での起動
 
 - [Operations](https://cloud.google.com/products/operations) を用いたアプリケーションの運用：10 分
 
@@ -181,6 +182,7 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT  --member serviceAc
 - GKE クラスタの作成、設定
 - コンテナの GKE へのデプロイ、外部公開
 - チャレンジ問題：もう一つの外部からのアクセス経路
+- チャレンジ問題：コンテナのサーバーレス環境での起動
 
 ## サンプルアプリケーションのコンテナ化
 
