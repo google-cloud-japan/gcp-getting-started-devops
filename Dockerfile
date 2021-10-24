@@ -26,9 +26,9 @@ FROM node:14.17.5-alpine3.14 AS frontend_builder
 # Create and set workdir
 WORKDIR /frontend
 
-# Copy `package.json` and `package-lock.json` to invalidate the next layer
+# Copy `package*.json` to invalidate the next layer
 # in case of a change in the dependencies
-COPY ./frontend/package.json ./frontend/package-lock.json ./
+COPY ./frontend/package*.json ./
 
 # Install dependencies
 RUN npm install

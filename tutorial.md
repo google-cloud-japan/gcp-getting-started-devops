@@ -24,6 +24,7 @@
   - GKE クラスタの作成
   - コンテナの GKE へのデプロイ、外部公開
   - チャレンジ問題：もう一つの外部からのアクセス経路
+  - チャレンジ問題：コンテナのサーバーレス環境での起動
 
 - [Operations](https://cloud.google.com/products/operations) を用いたアプリケーションの運用：10 分
 
@@ -104,7 +105,7 @@ GCP では利用したい機能ごとに、有効化を行う必要がありま�
 ### ハンズオンで利用する GCP の API を有効化する
 
 ```bash
-gcloud services enable cloudbuild.googleapis.com sourcerepo.googleapis.com cloudresourcemanager.googleapis.com container.googleapis.com stackdriver.googleapis.com cloudtrace.googleapis.com cloudprofiler.googleapis.com logging.googleapis.com iamcredentials.googleapis.com artifactregistry.googleapis.com
+gcloud services enable cloudbuild.googleapis.com sourcerepo.googleapis.com cloudresourcemanager.googleapis.com container.googleapis.com stackdriver.googleapis.com cloudtrace.googleapis.com cloudprofiler.googleapis.com logging.googleapis.com iamcredentials.googleapis.com artifactregistry.googleapis.com run.googleapis.com
 ```
 
 **GUI**: [API ライブラリ](https://console.cloud.google.com/apis/library?project={{project-id}})
@@ -181,6 +182,7 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT  --member serviceAc
 - GKE クラスタの作成、設定
 - コンテナの GKE へのデプロイ、外部公開
 - チャレンジ問題：もう一つの外部からのアクセス経路
+- チャレンジ問題：コンテナのサーバーレス環境での起動
 
 ## サンプルアプリケーションのコンテナ化
 
@@ -190,7 +192,7 @@ Go 言語で作成されたサンプル Web アプリケーションをコンテ
 ここで作成したコンテナはローカルディスクに保存されます。
 
 ```bash
-docker build -t asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/handson:v1 .
+DOCKER_BUILDKIT=1 docker build -t asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/handson:v1 .
 ```
 
 **ヒント**: `docker build` コマンドを叩くと、Dockerfile が読み込まれ、そこに記載されている手順通りにコンテナが作成されます。
@@ -220,6 +222,14 @@ asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/
 
 ![BrowserAccessToFrontend](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/frontend.png)
 
+### 起動しているアプリケーションの停止
+
+Cloud Shell 上で動いているアプリケーションを停止します。
+
+```bash
+docker ps -q | xargs -I{} docker stop {}
+```
+
 <walkthrough-footnote>ローカル環境（Cloud Shell 内）で動いているコンテナにアクセスできました。次に GKE で動かすための準備を進めます。</walkthrough-footnote>
 
 ## コンテナのレジストリへの登録
@@ -237,7 +247,7 @@ gcloud artifacts repositories create gcp-getting-started-devops --repository-for
 ### Docker に対する認証の設定
 
 ```bash
-gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 ```
 
 ### 作成したコンテナをコンテナレジストリ（Artifact Registry）へ登録（プッシュ）する
@@ -418,18 +428,23 @@ GUI で調査をする場合、以前の手順でアクセスしたページか�
 ここまでコンテナを作成し、Kubernetes(GKE)上で動作させました。
 一方で GCP では、コンテナを動作させるためのもう一つのサーバーレスプラットフォームとして [Cloud Run](https://cloud.google.com/run) が用意されています。
 
-ここでは作成したサービスアカウントを使い、ワン・コマンドで作成したコンテナイメージをサーバーレス環境にデプロイしてみましょう。
+ここでは作成したサービスアカウントを使い、ワンコマンドで作成したコンテナイメージをサーバーレス環境にデプロイしてみましょう。デプロイするリージョンは東京を指定します。
 
 利用するコマンドは `gcloud run deploy` になります。コマンドのリファレンスは[こちら](https://cloud.google.com/sdk/gcloud/reference/run/deploy)をご覧ください。
 
-**ヒント**: 今回のコマンドには下記 6 つのオプションを指定してください。
+**ヒント**: 下記コマンドのオプションに必要な値を入れて実行してみましょう。
 
-- image
-- service-account
-- port
-- platform
-- region
-- allow-unauthenticated
+```bash
+gcloud run deploy handson --image= --service-account= --region= --allow-unauthenticated
+```
+
+### 停止
+
+コストをかけないために、稼働させた Cloud Run のサービスを停止しておきます。（リージョンは指定してください）
+
+```bash
+gcloud run services delete handson --region= --quiet
+```
 
 ## Operations を利用したアプリケーションの運用
 
@@ -451,7 +466,7 @@ Operations を利用しアプリケーションのトラブルシューティン
 
 1. [トレースリストのページ](https://console.cloud.google.com/traces/traces?project={{project-id}})にブラウザからアクセスし、`トレース フィルタを追加` で `RootSpan`プロパティを選択、`/bench` を入力
 2. リクエストが遅い Span（青丸）を確認
-3. ログを表示をクリック
+3. `ログを表示` のチェックボックスをチェック
 4. “I” と表示されるアイコンをクリックして、連携された Cloud logging のログを確認
 
 ![Trace](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/trace_overall.png)
@@ -613,7 +628,7 @@ git remote add google https://source.developers.google.com/p/$GOOGLE_CLOUD_PROJE
 git push コマンドを使い、CSR に資材を転送（プッシュ）します。
 
 ```bash
-git push google master
+git push google main
 ```
 
 **GUI**: [Source Repository](https://source.cloud.google.com/{{project-id}}/devops-handson) から資材がプッシュされたことを確認できます。
