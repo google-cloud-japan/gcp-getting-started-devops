@@ -245,7 +245,7 @@ gcloud artifacts repositories create gcp-getting-started-devops --repository-for
 ### Docker に対する認証の設定
 
 ```bash
-gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 ```
 
 ### 作成したコンテナをコンテナレジストリ（Artifact Registry）へ登録（プッシュ）する
