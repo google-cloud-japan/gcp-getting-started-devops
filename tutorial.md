@@ -426,18 +426,23 @@ GUI で調査をする場合、以前の手順でアクセスしたページか�
 ここまでコンテナを作成し、Kubernetes(GKE)上で動作させました。
 一方で GCP では、コンテナを動作させるためのもう一つのサーバーレスプラットフォームとして [Cloud Run](https://cloud.google.com/run) が用意されています。
 
-ここでは作成したサービスアカウントを使い、ワン・コマンドで作成したコンテナイメージをサーバーレス環境にデプロイしてみましょう。
+ここでは作成したサービスアカウントを使い、ワンコマンドで作成したコンテナイメージをサーバーレス環境にデプロイしてみましょう。デプロイするリージョンは東京を指定します。
 
 利用するコマンドは `gcloud run deploy` になります。コマンドのリファレンスは[こちら](https://cloud.google.com/sdk/gcloud/reference/run/deploy)をご覧ください。
 
-**ヒント**: 今回のコマンドには下記 6 つのオプションを指定してください。
+**ヒント**: 下記コマンドのオプションに必要な値を入れて実行してみましょう。
 
-- image
-- service-account
-- port
-- platform
-- region
-- allow-unauthenticated
+```bash
+gcloud run deploy handson --image= --service-account= --region= --allow-unauthenticated
+```
+
+### 停止
+
+コストをかけないために、稼働させた Cloud Run のサービスを停止しておきます。（リージョンは指定してください）
+
+```bash
+gcloud run services delete handson --region= --quiet
+```
 
 ## Operations を利用したアプリケーションの運用
 
