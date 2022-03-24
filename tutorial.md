@@ -61,7 +61,7 @@
 
 GCP は、CLI、GUI から操作が可能です。ハンズオンでは主に CLI を使い作業を行いますが、GUI で確認する URL も合わせて掲載します。
 
-### gcloud コマンドラインツールとは?
+### **gcloud コマンドラインツールとは?**
 
 gcloud コマンドライン インターフェースは、GCP でメインとなる CLI ツールです。このツールを使用すると、コマンドラインから、またはスクリプトや他の自動化により、多くの一般的なプラットフォーム タスクを実行できます。
 
@@ -79,7 +79,7 @@ gcloud コマンドライン インターフェースは、GCP でメインと�
 
 gcloud コマンドでは操作の対象とするプロジェクトの設定が必要です。
 
-### GCP のプロジェクト ID を環境変数に設定
+### **GCP のプロジェクト ID を環境変数に設定**
 
 環境変数 `GOOGLE_CLOUD_PROJECT` に GCP プロジェクト ID を設定します。
 
@@ -87,7 +87,7 @@ gcloud コマンドでは操作の対象とするプロジェクトの設定が�
 export GOOGLE_CLOUD_PROJECT="{{project-id}}"
 ```
 
-### CLI（gcloud コマンド） から利用する GCP のデフォルトプロジェクトを設定
+### **CLI（gcloud コマンド） から利用する GCP のデフォルトプロジェクトを設定**
 
 操作対象のプロジェクトを設定します。
 
@@ -102,7 +102,7 @@ gcloud config set project $GOOGLE_CLOUD_PROJECT
 GCP では利用したい機能ごとに、有効化を行う必要があります。
 ここでは、以降のハンズオンで利用する機能を事前に有効化しておきます。
 
-### ハンズオンで利用する GCP の API を有効化する
+### **ハンズオンで利用する GCP の API を有効化する**
 
 ```bash
 gcloud services enable cloudbuild.googleapis.com sourcerepo.googleapis.com cloudresourcemanager.googleapis.com container.googleapis.com stackdriver.googleapis.com cloudtrace.googleapis.com cloudprofiler.googleapis.com logging.googleapis.com iamcredentials.googleapis.com artifactregistry.googleapis.com run.googleapis.com
@@ -110,33 +110,23 @@ gcloud services enable cloudbuild.googleapis.com sourcerepo.googleapis.com cloud
 
 **GUI**: [API ライブラリ](https://console.cloud.google.com/apis/library?project={{project-id}})
 
-<walkthrough-footnote>必要な機能が使えるようになりました。次にコマンドラインツールに関する残りの設定を行います。</walkthrough-footnote>
-
 ## gcloud コマンドラインツール設定 - リージョン、ゾーン
 
-### デフォルトリージョンを設定
+### **デフォルトリージョン、ゾーンを設定**
 
-コンピュートリソースを作成するデフォルトのリージョンとして、日本リージョン（asia-northeast1）を指定します。
-
-```bash
-gcloud config set compute/region asia-northeast1
-```
-
-### デフォルトゾーンを設定
-
-コンピュートリソースを作成するデフォルトのゾーンとして、日本リージョン内の 1 ゾーン（asia-northeast1-c）を指定します。
+コンピュートリソースを作成するデフォルトのリージョン、ゾーンとして、東京 (asia-northeast1/asia-northeast1-c）を指定します。
 
 ```bash
-gcloud config set compute/zone asia-northeast1-c
+gcloud config set compute/region asia-northeast1 && gcloud config set compute/zone asia-northeast1-c
 ```
 
-<walkthrough-footnote>必要な機能が使えるようになりました。次にサービスアカウントの設定を行います。</walkthrough-footnote>
+<walkthrough-footnote>必要な機能の有効化、gcloud の設定を行いました。次にサービスアカウントの設定を行います。</walkthrough-footnote>
 
 ## サービスアカウントの作成、権限設定
 
 アプリケーションから他の GCP サービスを利用する場合、個々のエンドユーザーではなく、専用の Google アカウント（サービスアカウント）を作ることを強く推奨しています。
 
-### ハンズオン向けのサービスアカウントを作成する
+### **ハンズオン向けのサービスアカウントを作成する**
 
 `devops-handson-gsa` という名前で、ハンズオン専用のサービスアカウントを作成します。
 
@@ -186,7 +176,7 @@ gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT  --member serviceAc
 
 ## サンプルアプリケーションのコンテナ化
 
-### コンテナを作成する
+### **コンテナを作成する**
 
 Go 言語で作成されたサンプル Web アプリケーションをコンテナ化します。
 ここで作成したコンテナはローカルディスクに保存されます。
@@ -197,7 +187,7 @@ DOCKER_BUILDKIT=1 docker build -t asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_P
 
 **ヒント**: `docker build` コマンドを叩くと、Dockerfile が読み込まれ、そこに記載されている手順通りにコンテナが作成されます。
 
-### Cloud Shell 上でコンテナを起動する
+### **Cloud Shell 上でコンテナを起動する**
 
 上の手順で作成したコンテナを Cloud Shell 上で起動します。
 
@@ -213,7 +203,7 @@ asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/
 
 ## 作成したコンテナの動作確認
 
-### CloudShell の機能を利用し、起動したアプリケーションにアクセスする
+### **CloudShell の機能を利用し、起動したアプリケーションにアクセスする**
 
 画面右上にあるアイコン <walkthrough-web-preview-icon></walkthrough-web-preview-icon> をクリックし、"プレビューのポート: 8080"を選択します。
 これによりブラウザで新しいタブが開き、Cloud Shell 上で起動しているコンテナにアクセスできます。
@@ -222,7 +212,7 @@ asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/
 
 ![BrowserAccessToFrontend](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/frontend.png)
 
-### 起動しているアプリケーションの停止
+### **起動しているアプリケーションの停止**
 
 Cloud Shell 上で動いているアプリケーションを停止します。
 
@@ -237,20 +227,20 @@ docker ps -q | xargs -I{} docker stop {}
 先程作成したコンテナはローカルに保存されているため、他の場所から参照ができません。
 他の場所から利用できるようにするために、GCP 上のプライベートなコンテナ置き場（コンテナレジストリ）に登録します。
 
-### Docker リポジトリの作成
+### **Docker リポジトリの作成**
 
 ```bash
 gcloud artifacts repositories create gcp-getting-started-devops --repository-format=docker \
 --location=asia-northeast1 --description="Docker repository for DevOps Handson"
 ```
 
-### Docker に対する認証の設定
+### **Docker に対する認証の設定**
 
 ```bash
 gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 ```
 
-### 作成したコンテナをコンテナレジストリ（Artifact Registry）へ登録（プッシュ）する
+### **作成したコンテナをコンテナレジストリ（Artifact Registry）へ登録（プッシュ）する**
 
 ```bash
 docker push asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-started-devops/handson:v1
@@ -264,7 +254,7 @@ docker push asia-northeast1-docker.pkg.dev/$GOOGLE_CLOUD_PROJECT/gcp-getting-sta
 
 コンテナレジストリに登録したコンテナを動かすための、GKE 環境を準備します。
 
-### GKE クラスタを作成する
+### **GKE クラスタを作成する**
 
 ```bash
 gcloud container clusters create "k8s-devops-handson"  \
@@ -283,7 +273,7 @@ gcloud container clusters create "k8s-devops-handson"  \
 
 ## GKE クラスタの作成、設定
 
-### GKE クラスタへのアクセス設定を行う
+### **GKE クラスタへのアクセス設定を行う**
 
 Kubernetes には専用の [CLI ツール（kubectl）](https://kubernetes.io/docs/reference/kubectl/overview/)が用意されています。
 
@@ -299,19 +289,19 @@ gcloud container clusters get-credentials k8s-devops-handson
 
 今回デプロイするアプリケーションは Logging, Tracing など GCP の機能を利用します。アプリケーションに先の手順で作成した Google サービスアカウントの権限を付与するために [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) を利用します。
 
-### アプリケーションを配置する名前空間を作成する
+### **アプリケーションを配置する名前空間を作成する**
 
 ```bash
 kubectl create namespace devops-handson-ns
 ```
 
-### アプリケーションで利用する Kubernetes サービスアカウントを作成する
+### **アプリケーションで利用する Kubernetes サービスアカウントを作成する**
 
 ```bash
 kubectl create serviceaccount --namespace devops-handson-ns devops-handson-ksa
 ```
 
-### Kubernetes サービスアカウントと Google サービスアカウント間のポリシーバインディングを作成する
+### **Kubernetes サービスアカウントと Google サービスアカウント間のポリシーバインディングを作成する**
 
 ```bash
 gcloud iam service-accounts add-iam-policy-binding \
@@ -320,7 +310,7 @@ gcloud iam service-accounts add-iam-policy-binding \
   devops-handson-gsa@{{project-id}}.iam.gserviceaccount.com
 ```
 
-### Kubernetes サービスアカウントにアノテーションを追加する
+### **Kubernetes サービスアカウントにアノテーションを追加する**
 
 ```bash
 kubectl annotate serviceaccount \
@@ -333,7 +323,7 @@ kubectl annotate serviceaccount \
 
 ## コンテナの GKE へのデプロイ、外部公開 - 準備
 
-### ハンズオン用の設定ファイルを修正する
+### **ハンズオン用の設定ファイルを修正する**
 
 Kubernetes のデプロイ用設定ファイルを、コンテナレジストリに登録済みのコンテナを使うように修正します。
 
@@ -345,7 +335,7 @@ sed -i".org" -e "s/FIXME/$GOOGLE_CLOUD_PROJECT/g" gke-config/deployment.yaml
 
 ## コンテナの GKE へのデプロイ、外部公開
 
-### コンテナを Kubernetes クラスタへデプロイする
+### **コンテナを Kubernetes クラスタへデプロイする**
 
 ```bash
 kubectl apply -f gke-config/
@@ -363,7 +353,7 @@ kubectl apply -f gke-config/
 
 ## コンテナの GKE へのデプロイ、外部公開 - 動作確認
 
-### アクセスするグローバル IP アドレスの取得
+### **アクセスするグローバル IP アドレスの取得**
 
 デプロイしたコンテナへのアクセスを待ち受ける Service の IP アドレスを確認します。
 
@@ -375,7 +365,7 @@ kubectl get service devops-handson-loadbalancer -n devops-handson-ns -w
 
 **ヒント**: デプロイしたコンテナ自体はグローバルからアクセス可能な IP アドレスを持ちません。今回のように、外部からのアクセスを受け付けるリソース（Service）を作成し、そこを通してコンテナにアクセスする必要があります。
 
-### コンテナへアクセス
+### **コンテナへアクセス**
 
 下記のコマンドを実行し出力された URL をクリックし、アクセスします。
 
@@ -391,7 +381,7 @@ export SERVICE_IP=$(kubectl get service devops-handson-loadbalancer -n devops-ha
 
 ![BrowserAccessToFrontend](https://raw.githubusercontent.com/google-cloud-japan/gcp-getting-started-devops/main/tutorial-assets/frontend.png)
 
-### /bench の API にアクセス負荷をかける
+### **/bench の API にアクセス負荷をかける**
 
 リクエストが増加する速度を確認します。bench は処理に時間がかかる API を叩くようになっているため、ゆっくり増えていくはずです。
 
@@ -405,7 +395,7 @@ export SERVICE_IP=$(kubectl get service devops-handson-loadbalancer -n devops-ha
 
 しかし実は Service の作成と同時に、Ingress というリソースも作成しています。
 
-### Service と Ingress の違い
+### **Service と Ingress の違い**
 
 双方ともグローバル IP アドレスを持たせ、稼働しているコンテナの前に配置でき、ロードバランサの役割を担います。
 しかし大きく下記の違いがあります。
@@ -416,7 +406,7 @@ export SERVICE_IP=$(kubectl get service devops-handson-loadbalancer -n devops-ha
 昨今の Web サービスでは、TLS を利用することが基本となっており、さらにより柔軟な設定を行えるため Ingress を前段に置く形が基本的な構成となります。
 詳細は、[Service](https://kubernetes.io/ja/docs/concepts/services-networking/service/)、[Ingress](https://kubernetes.io/ja/docs/concepts/services-networking/ingress/)をご参照ください。
 
-### Ingress へのアクセス
+### **Ingress へのアクセス**
 
 作成済みの Ingress のグローバル IP アドレスを探し出し、ブラウザからアクセスし、Service と同じページが見えることを確認してください。
 
@@ -438,7 +428,7 @@ GUI で調査をする場合、以前の手順でアクセスしたページか�
 gcloud run deploy handson --image= --service-account= --region= --allow-unauthenticated
 ```
 
-### 停止
+### **停止**
 
 コストをかけないために、稼働させた Cloud Run のサービスを停止しておきます。（リージョンは指定してください）
 
@@ -513,15 +503,15 @@ Logging のページに遷移し、関連するログが表示されているこ
 
 ここではそれがちゃんとログに出力されていることを確認します。
 
-### 出力箇所の確認
+### **出力箇所の確認**
 
 まずアプリケーションのどこでそのログ出力をしているかを確認します。
 
 1. 画面右上にあるアイコン <walkthrough-cloud-shell-editor-icon></walkthrough-cloud-shell-editor-icon> をクリックし、Cloud Shell エディタを開きます。
 2. 次にエディタのエクスプローラーから `cloudshell_open/gcp-getting-started-devops/backend/` とたどり、main.go ファイルを開きます。
-3. 98 行目の log.Printf という行が該当箇所です。
+3. 116 行目の log.Printf という行が該当箇所です。
 
-### 出力されたログの確認
+### **出力されたログの確認**
 
 Cloud Logging を使い、該当のログが出力されていることを確認します。
 
@@ -583,7 +573,7 @@ gcloud beta builds triggers create cloud-source-repositories --description="devo
 
 ## Git クライアント設定
 
-### 認証設定
+### **認証設定**
 
 Git クライアントで CSR と認証するための設定を行います。
 
@@ -593,20 +583,13 @@ git config --global credential.https://source.developers.google.com.helper gclou
 
 **ヒント**: git コマンドと gcloud で利用している IAM アカウントを紐付けるための設定です。
 
-### 利用者設定
+### **利用者、メールアドレス設定**
 
-USERNAME を自身のユーザ名に置き換えて実行し、利用者を設定します。
-
-```bash
-git config --global user.name "USERNAME"
-```
-
-### メールアドレス設定
-
-USERNAME@EXAMPLE.com を自身のメールアドレスに置き換えて実行し、利用者のメールアドレスを設定します。
+ユーザ名、メールアドレスを仮のものに設定します。
 
 ```bash
-git config --global user.email "USERNAME@EXAMPLE.com"
+git config --global user.name "USERNAME" \
+  && git config --global user.email "USERNAME@EXAMPLE.com"
 ```
 
 <walkthrough-footnote>Git クライアントの設定を行いました。次に先程作成した CSR のリポジトリと、Cloud Shell 上にある資材を紐付けます。</walkthrough-footnote>
@@ -637,11 +620,11 @@ git push google main
 
 ## Cloud Build トリガーの動作確認
 
-### Cloud Build の自動実行を確認
+### **Cloud Build の自動実行を確認**
 
 [Cloud Build の履歴](https://console.cloud.google.com/cloud-build/builds?project={{project-id}}) にアクセスし、git push コマンドを実行した時間にビルドが実行されていることを確認します。
 
-### 新しいコンテナのデプロイ確認
+### **新しいコンテナのデプロイ確認**
 
 ビルドが正常に完了後、以下コマンドを実行し、Cloud Build で作成したコンテナがデプロイされていることを確認します。
 
@@ -662,27 +645,31 @@ Cloud Build 実行前は Image が `asia-northeast1-docker.pkg.dev/{{project-id}
 
 <walkthrough-footnote>資材を更新、プッシュをトリガーとしたアプリケーションのビルド、コンテナ化、GKE へのデプロイを行うパイプラインが完成しました。次はチャレンジ問題を用意しています。</walkthrough-footnote>
 
-## チャレンジ問題：処理に時間がかかっているページの改善
+## 処理に時間がかかっているページの改善
 
-/bench の API はレスポンスに時間がかかっていることを確認しました。それを修正し、Kubernetes にデプロイしてみましょう。
+/bench の API はレスポンスに時間がかかっていることを確認しました。先程作成したパイプラインを用いて、ソースコードの修正から GKE へのデプロイを自動で行います。
 
-### ソースコードの修正
+### **ソースコードの修正**
 
-main.go がアプリケーションのソースコードです。処理に時間がかかっているいくつかの行を削除し、保存します。
+`main.go` がアプリケーションのソースコードです。処理に時間がかかっているいくつかの行を削除し、保存します。
 
-**ヒント**: Stress とコメントがついています。
+```bash
+sed -i -e '112,114d' backend/main.go
+```
 
-### Git に修正をコミット、CSR にプッシュ
+### **Git に修正をコミット、CSR にプッシュ**
 
-今行った修正を git コマンドを使い、コミット、CSR にプッシュします。
+行った修正を git コマンドを使い、コミット、CSR にプッシュします。
 
-**ヒント**: 通常 `git add`、`git commit`、`git push` の 3 つのコマンドを利用します。
+```bash
+git add . && git commit -m 'Delete stress code' && git push google main
+```
 
-### Cloud Build の自動実行を確認
+### **Cloud Build の自動実行を確認**
 
 [Cloud Build の履歴](https://console.cloud.google.com/cloud-build/builds?project={{project-id}}) にアクセスし、git push コマンドを実行したタイミングでビルドが実行されていることを確認します。
 
-### アプリケーションにアクセスし、すぐレスポンスがかえることを確認
+### **アプリケーションにアクセスし、すぐレスポンスがかえることを確認**
 
 bench のタブから `Start!` をクリックし、カウントアップが速くなっていることを確認します。
 
@@ -698,13 +685,13 @@ bench のタブから `Start!` をクリックし、カウントアップが速�
 
 作成したリソースを個別に削除する場合は、こちらのページの手順を実施せずに次のページに進んで下さい。
 
-### GCP のデフォルトプロジェクト設定の削除
+### **GCP のデフォルトプロジェクト設定の削除**
 
 ```bash
 gcloud config unset project
 ```
 
-### プロジェクトの削除
+### **プロジェクトの削除**
 
 ```bash
 gcloud projects delete {{project-id}}
@@ -712,43 +699,43 @@ gcloud projects delete {{project-id}}
 
 ## クリーンアップ（個別リソースの削除）
 
-### GKE クラスタの削除
+### **GKE クラスタの削除**
 
 ```bash
 gcloud container clusters delete k8s-devops-handson --quiet
 ```
 
-### アプリケーション用サービスアカウントの削除
+### **アプリケーション用サービスアカウントの削除**
 
 ```bash
 gcloud iam service-accounts delete devops-handson-gsa@$GOOGLE_CLOUD_PROJECT.iam.gserviceaccount.com --quiet
 ```
 
-### Cloud Build 用サービスアカウントから Kubernetes 管理者権限の削除
+### **Cloud Build 用サービスアカウントから Kubernetes 管理者権限の削除**
 
 ```bash
 gcloud projects remove-iam-policy-binding $GOOGLE_CLOUD_PROJECT  --member serviceAccount:$CB_SA --role roles/container.admin
 ```
 
-### Cloud Source Repository のリポジトリの削除
+### **Cloud Source Repository のリポジトリの削除**
 
 ```bash
 gcloud source repos delete devops-handson --quiet
 ```
 
-### Artifact Registry のリポジトリの削除
+### **Artifact Registry のリポジトリの削除**
 
 ```bash
 gcloud artifacts repositories delete gcp-getting-started-devops --location=asia-northeast1 --quiet
 ```
 
-### Cloud Build トリガーの削除
+### **Cloud Build トリガーの削除**
 
 ```bash
 gcloud beta builds triggers list --filter="description = devopshandson" --format="value(id)" | xargs -I{} gcloud beta builds triggers delete {} --quiet
 ```
 
-### ハンズオン資材の削除
+### **ハンズオン資材の削除**
 
 ```bash
 cd $HOME && rm -rf cloudshell_open

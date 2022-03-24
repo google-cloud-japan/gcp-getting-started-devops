@@ -32,7 +32,7 @@ import (
 )
 
 var projectID = ""
-var isLocal = false
+var onGoogleCloud = true
 
 const (
 	service        = "devops-demo"
@@ -40,7 +40,7 @@ const (
 	metricPrefix   = "devops-"
 )
 
-func logRequest(r *http.Request, traceID string, spanID string, msg string) {
+func logRequestWithTrace(r *http.Request, traceID string, spanID string, msg string) {
 	log.WithFields(log.Fields{
 		"UserAgent":                     r.UserAgent(),
 		"RequestURL":                    r.Host,
@@ -56,6 +56,20 @@ func logRequest(r *http.Request, traceID string, spanID string, msg string) {
 	}).Info(msg)
 }
 
+func logRequest(r *http.Request, msg string) {
+	log.WithFields(log.Fields{
+		"UserAgent":                     r.UserAgent(),
+		"RequestURL":                    r.Host,
+		"RequestURI":                    r.RequestURI,
+		"RequestMethod":                 r.Method,
+		"Host":                          r.Host,
+		"Proto":                         r.Proto,
+		"ProtoMajor":                    r.ProtoMajor,
+		"ProtoMinor":                    r.ProtoMinor,
+		"RemoteAddr":                    r.RemoteAddr,
+	}).Info(msg)
+}
+
 func logMethod(traceID string, spanID string, msg string) {
 	log.WithFields(log.Fields{
 		"logging.googleapis.com/trace":  "projects/" + projectID + "/traces/" + traceID,
@@ -67,13 +81,15 @@ func normalHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 
-		if !isLocal {
+		if onGoogleCloud {
 			_, span := trace.StartSpan(context.Background(), "/normal")
 			defer span.End()
 			s := span.SpanContext()
 
 			addAttributesToSpan(span, r)
-			logRequest(r, s.TraceID.String(), s.SpanID.String(), "Access to normal")
+			logRequestWithTrace(r, s.TraceID.String(), s.SpanID.String(), "Access to normal")
+		} else {
+			logRequest(r, "Access to normal")
 		}
 
 		returnElapsedTimeAsJSON(w, start)
@@ -84,23 +100,26 @@ func benchHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 
-		if isLocal {
-			fibonacciOnLocal(rand.Intn(3000000000))
-			fibonacciOnLocal(rand.Intn(3000000000))
-			fibonacciOnLocal(rand.Intn(3000000000))
-		} else {
+		if onGoogleCloud {
 			ctx, span := trace.StartSpan(context.Background(), "/bench")
 			defer span.End()
 			s := span.SpanContext()
 
 			addAttributesToSpan(span, r)
-			logRequest(r, s.TraceID.String(), s.SpanID.String(), "Access to bench")
-			log.Printf("context: %v\n", ctx)
+			logRequestWithTrace(r, s.TraceID.String(), s.SpanID.String(), "Access to bench")
 
 			// Stress
 			fibonacci(ctx, rand.Intn(3000000000))
 			fibonacci(ctx, rand.Intn(3000000000))
 			fibonacci(ctx, rand.Intn(3000000000))
+
+			log.Printf("context: %v\n", ctx)
+		} else {
+			fibonacciOnLocal(rand.Intn(3000000000))
+			fibonacciOnLocal(rand.Intn(3000000000))
+			fibonacciOnLocal(rand.Intn(3000000000))
+
+			logRequest(r, "Access to bench")
 		}
 
 		returnElapsedTimeAsJSON(w, start)
@@ -110,7 +129,7 @@ func benchHandler() http.Handler {
 func returnElapsedTimeAsJSON(w http.ResponseWriter, start time.Time) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf(`{"elapsed": %d}`, time.Now().Sub(start).Milliseconds())))
+	w.Write([]byte(fmt.Sprintf(`{"elapsed": %d}`, time.Since(start).Milliseconds())))
 }
 
 func addAttributesToSpan(span *trace.Span, r *http.Request) {
@@ -143,11 +162,8 @@ func fibonacci(ctx context.Context, number int) int {
 
 func fibonacciOnLocal(number int) int {
 	prev, next := 0, 1
-	switch number {
-	case 0:
-		return 0
-	case 1:
-		return 1
+	if number < 2 {
+		return number
 	}
 	for i := 1; i < number; i++ {
 		prev, next = next, prev+next
@@ -182,13 +198,13 @@ func main() {
 
 	projectID = cred.ProjectID
 	if len(projectID) == 0 {
-		log.Println("Failed to get the credential. Trying to enter Local mode...")
-		isLocal = true
+		log.Println("Failed to get the credential. Running as local mode...")
+		onGoogleCloud = false
 	} else {
 		log.Infof("Successfully retrieved GCP Project ID: %v", projectID)
 	}
 
-	if !isLocal {
+	if onGoogleCloud {
 		// Initialize Profiler
 		if err := profiler.Start(profiler.Config{
 			Service:        service,

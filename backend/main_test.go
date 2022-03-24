@@ -31,7 +31,7 @@ type Response struct {
 
 func TestMain(m *testing.M) {
 	// Run tests on local
-	isLocal = true
+	onGoogleCloud = false
 	status := m.Run()
 	os.Exit(status)
 }
