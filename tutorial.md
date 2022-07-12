@@ -84,7 +84,7 @@ gcloud コマンドでは操作の対象とするプロジェクトの設定が�
 環境変数 `GOOGLE_CLOUD_PROJECT` に GCP プロジェクト ID を設定します。
 
 ```bash
-export GOOGLE_CLOUD_PROJECT="{{project-id}}"
+export GOOGLE_CLOUD_PROJECT="<walkthrough-project-id/>"
 ```
 
 ### **CLI（gcloud コマンド） から利用する GCP のデフォルトプロジェクトを設定**
@@ -306,8 +306,8 @@ kubectl create serviceaccount --namespace devops-handson-ns devops-handson-ksa
 ```bash
 gcloud iam service-accounts add-iam-policy-binding \
   --role roles/iam.workloadIdentityUser \
-  --member "serviceAccount:{{project-id}}.svc.id.goog[devops-handson-ns/devops-handson-ksa]" \
-  devops-handson-gsa@{{project-id}}.iam.gserviceaccount.com
+  --member "serviceAccount:<walkthrough-project-id/>.svc.id.goog[devops-handson-ns/devops-handson-ksa]" \
+  devops-handson-gsa@<walkthrough-project-id/>.iam.gserviceaccount.com
 ```
 
 ### **Kubernetes サービスアカウントにアノテーションを追加する**
@@ -316,7 +316,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 kubectl annotate serviceaccount \
   --namespace devops-handson-ns \
   devops-handson-ksa \
-  iam.gke.io/gcp-service-account=devops-handson-gsa@{{project-id}}.iam.gserviceaccount.com
+  iam.gke.io/gcp-service-account=devops-handson-gsa@<walkthrough-project-id/>.iam.gserviceaccount.com
 ```
 
 <walkthrough-footnote>これで GKE 上の devops-handson-ns 名前空間に作成したアプリケーションが devops-handson-gsa サービスアカウントの権限を利用できるようになりました。</walkthrough-footnote>
@@ -637,10 +637,10 @@ kubectl describe deployment/devops-handson-deployment -n devops-handson-ns | gre
 コマンド実行結果の例。
 
 ```
-    Image:        asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-devops/handson:COMMITHASH
+    Image:        asia-northeast1-docker.pkg.dev/<walkthrough-project-id/>/gcp-getting-started-devops/handson:COMMITHASH
 ```
 
-Cloud Build 実行前は Image が `asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-devops/handson:v1` となっていますが、実行後は `asia-northeast1-docker.pkg.dev/{{project-id}}/gcp-getting-started-devops/handson:COMMITHASH` になっている事が分かります。
+Cloud Build 実行前は Image が `asia-northeast1-docker.pkg.dev/<walkthrough-project-id/>/gcp-getting-started-devops/handson:v1` となっていますが、実行後は `asia-northeast1-docker.pkg.dev/<walkthrough-project-id/>/gcp-getting-started-devops/handson:COMMITHASH` になっている事が分かります。
 実際は、COMMITHASH には Git のコミットハッシュ値が入ります。
 
 <walkthrough-footnote>資材を更新、プッシュをトリガーとしたアプリケーションのビルド、コンテナ化、GKE へのデプロイを行うパイプラインが完成しました。次はチャレンジ問題を用意しています。</walkthrough-footnote>
@@ -694,7 +694,7 @@ gcloud config unset project
 ### **プロジェクトの削除**
 
 ```bash
-gcloud projects delete {{project-id}}
+gcloud projects delete <walkthrough-project-id/>
 ```
 
 ## クリーンアップ（個別リソースの削除）
